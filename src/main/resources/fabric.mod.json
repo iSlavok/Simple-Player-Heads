@@ -17,13 +17,13 @@
 	"entrypoints": {
 		"main": [
 			{
-				"value": "online.slavok.SimplePlayerHeads",
+				"value": "online.slavok.heads.SimplePlayerHeads",
 				"adapter": "kotlin"
 			}
 		],
 		"client": [
 			{
-				"value": "online.slavok.SimplePlayerHeadsClient",
+				"value": "online.slavok.heads.SimplePlayerHeadsClient",
 				"adapter": "kotlin"
 			}
 		]

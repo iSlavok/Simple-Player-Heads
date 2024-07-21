@@ -33,7 +33,5 @@ otherDeaths = false
 
 ## Installation
 
-1. Download the latest release of Simple Whitelist from [here](https://modrinth.com/mod/simple-player-heads).
+1. Download the latest release of Simple Player Heads from [here](https://modrinth.com/mod/simple-player-heads).
 2. Place the `.jar` file in your `mods` folder.
-
-

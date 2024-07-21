@@ -1,4 +1,4 @@
-package online.slavok.config
+package online.slavok.heads.config
 
 import net.peanuuutz.tomlkt.Toml
 import java.io.File

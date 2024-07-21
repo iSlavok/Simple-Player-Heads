@@ -1,4 +1,4 @@
-package online.slavok.events
+package online.slavok.heads.events
 
 import com.mojang.authlib.GameProfile
 import net.minecraft.component.DataComponentTypes
@@ -8,7 +8,7 @@ import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
-import online.slavok.SimplePlayerHeads
+import online.slavok.heads.SimplePlayerHeads
 
 class PlayerDeathEvent {
     fun onPlayerDeath(gameProfile: GameProfile, inventory: PlayerInventory, damageSource: DamageSource) {

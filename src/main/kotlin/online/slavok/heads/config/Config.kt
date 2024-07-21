@@ -1,4 +1,4 @@
-package online.slavok.config
+package online.slavok.heads.config
 
 import kotlinx.serialization.Serializable
 import net.peanuuutz.tomlkt.TomlComment

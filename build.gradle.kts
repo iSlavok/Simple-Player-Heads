@@ -1,6 +1,10 @@
+import me.modmuss50.mpp.ReleaseType
+import org.gradle.api.tasks.bundling.AbstractArchiveTask
+
 plugins {
     id("dev.kikugie.stonecutter")
     id("fabric-loom") version "1.17.17"
+    id("me.modmuss50.mod-publish-plugin") version "2.1.1"
     kotlin("jvm") version "2.4.10"
     kotlin("plugin.serialization") version "2.4.10"
 }
@@ -96,4 +100,23 @@ java {
 
 kotlin {
     jvmToolchain(mc.java)
+}
+
+// Each version node publishes itself as one Modrinth version (`./gradlew publishMods`).
+publishMods {
+    file = tasks.named<AbstractArchiveTask>("remapJar").flatMap { it.archiveFile }
+    type = ReleaseType.STABLE
+    modLoaders.add("fabric")
+    version = project.version.toString()
+    displayName = "Simple Player Heads ${project.version}"
+    changelog = "See https://github.com/iSlavok/Simple-Player-Heads/releases"
+
+    modrinth {
+        projectId = providers.gradleProperty("modrinth_id")
+        accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+        minecraftVersions.addAll(mc.gameVersions)
+        requires("fabric-api")
+        requires("fabric-language-kotlin")
+        optional("modmenu")
+    }
 }

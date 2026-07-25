@@ -1,0 +1,44 @@
+name: release
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # JDK 25 runs the daemon (so the 26+ nodes register); 17 and 21 are the
+      # toolchains the yarn versions compile against.
+      - uses: actions/setup-java@v4
+        with:
+          java-version: |
+            17
+            21
+            25
+          distribution: temurin
+      - uses: gradle/actions/setup-gradle@v4
+
+      # Build every version's jar (no gametest boot).
+      - run: ./gradlew assemble --stacktrace
+
+      # softprops has no exclude patterns, so stage only the loadable (non-sources) jars.
+      - name: Collect release jars
+        run: |
+          mkdir -p release-jars
+          find versions -path '*/build/libs/*.jar' ! -name '*-sources.jar' -exec cp {} release-jars/ \;
+          ls -la release-jars
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: release-jars/*.jar
+          fail_on_unmatched_files: true
+          generate_release_notes: true
+
+      - name: Publish to Modrinth
+        env:
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+        run: ./gradlew publishMods --stacktrace

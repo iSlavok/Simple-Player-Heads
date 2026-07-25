@@ -48,6 +48,9 @@ only builds on JDK 25.
 
 CI publishes automatically on a `v*` tag (see `.github/workflows/release.yml`):
 it attaches every version's jar to a GitHub Release and publishes each to Modrinth.
+The released version is taken **from the tag** (`v1.0.2` → `1.0.2`), so you do not
+edit `mod_version` for a release — just tag. (`mod_version` in `gradle.properties`
+is only the default for local dev builds.)
 
 One-time setup:
 
@@ -55,4 +58,5 @@ One-time setup:
    `gradle.properties` to its id or slug (it is public, safe to commit).
 2. Add a repository Actions secret `MODRINTH_TOKEN` — a Modrinth PAT with the
    "Create versions" scope.
-3. Cut a release by pushing a tag, e.g. `git tag v1.0.2 && git push origin v1.0.2`.
+
+Then release by pushing a tag: `git tag v1.0.2 && git push origin v1.0.2`.

@@ -8,21 +8,25 @@ import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
+import online.slavok.heads.ModBehavior
 import online.slavok.heads.SimplePlayerHeads
 
-class PlayerDeathEvent {
+object PlayerDeathEvent {
+    @JvmStatic
     fun onPlayerDeath(gameProfile: GameProfile, inventory: PlayerInventory, damageSource: DamageSource) {
-        val config = SimplePlayerHeads.configManager.config
-        if (damageSource.attacker is PlayerEntity) {
-            if ((damageSource.attacker as PlayerEntity).gameProfile == gameProfile) {
-                if (config.selfKill) {
-                    addHead(gameProfile, inventory)
-                }
-            } else if (config.playerKill) {
-                addHead(gameProfile, inventory)
-            }
-        } else if (config.otherDeaths) {
+        if (!ModBehavior.active) return
+        if (shouldDropHead(gameProfile, damageSource)) {
             addHead(gameProfile, inventory)
+        }
+    }
+
+    private fun shouldDropHead(gameProfile: GameProfile, damageSource: DamageSource): Boolean {
+        val config = SimplePlayerHeads.configManager.config
+        val attacker = damageSource.attacker
+        return when {
+            attacker is PlayerEntity && attacker.gameProfile == gameProfile -> config.selfKill
+            attacker is PlayerEntity -> config.playerKill
+            else -> config.otherDeaths
         }
     }
 

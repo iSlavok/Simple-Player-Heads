@@ -28,3 +28,20 @@ jobs:
           name: jars
           path: versions/*/build/libs/*.jar
           if-no-files-found: error
+
+  # Unobfuscated 26+ needs JDK 25; settings only registers those nodes on JDK 25+.
+  build-unobfuscated:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: 25
+          distribution: temurin
+      - uses: gradle/actions/setup-gradle@v4
+      - run: ./gradlew :26.2:build --stacktrace
+      - uses: actions/upload-artifact@v4
+        with:
+          name: jars-unobfuscated
+          path: versions/26.*/build/libs/*.jar
+          if-no-files-found: error

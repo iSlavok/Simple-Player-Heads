@@ -56,6 +56,17 @@ object PlayerDeathEvent {
     }
 
     private fun addHead(gameProfile: GameProfile, inventory: PlayerInv) {
+        val head = createHead(gameProfile)
+        //? if >=1.22 {
+        /*inventory.add(head)*/
+        //?} else {
+        inventory.insertStack(head)
+        //?}
+    }
+
+    /** Builds a player head carrying [gameProfile]. Public so gametests can verify it per version. */
+    @JvmStatic
+    fun createHead(gameProfile: GameProfile): ItemStack {
         val head = ItemStack(Items.PLAYER_HEAD)
         //? if <1.20.5 {
         /*val skullOwner = NbtHelper.writeGameProfile(NbtCompound(), gameProfile)
@@ -65,10 +76,6 @@ object PlayerDeathEvent {
         //?} else {
         /*head.set(DataComponents.PROFILE, ResolvableProfile.createResolved(gameProfile))
         *///?}
-        //? if >=1.22 {
-        /*inventory.add(head)*/
-        //?} else {
-        inventory.insertStack(head)
-        //?}
+        return head
     }
 }

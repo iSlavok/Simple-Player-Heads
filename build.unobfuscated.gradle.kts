@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     id("dev.kikugie.stonecutter")
     id("net.fabricmc.fabric-loom") version "1.17.17" // non-remapping variant (Minecraft 26+ ships unobfuscated)
@@ -34,6 +32,19 @@ dependencies {
     include("net.peanuuutz.tomlkt:tomlkt:0.4.0")
 }
 
+fabricApi {
+    configureTests {
+        createSourceSet = true
+        modId = "${property("archives_base_name")}-test"
+        eula = true
+    }
+}
+
+dependencies {
+    // Non-remapping variant: no "mod" prefix, no remap.
+    "gametestImplementation"("net.fabricmc.fabric-api:fabric-api:${u.fapi}")
+}
+
 tasks.processResources {
     val props = mapOf(
         "version" to project.version,
@@ -44,17 +55,11 @@ tasks.processResources {
     filesMatching(listOf("fabric.mod.json", "*.mixins.json")) { expand(props) }
 }
 
-tasks.withType<JavaCompile>().configureEach { options.release = javaVersion }
-
-kotlin {
-    compilerOptions {
-        jvmTarget = JvmTarget.fromTarget(javaVersion.toString())
-    }
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(javaVersion)
+    withSourcesJar()
 }
 
-java {
-    withSourcesJar()
-    val jv = JavaVersion.toVersion(javaVersion)
-    sourceCompatibility = jv
-    targetCompatibility = jv
+kotlin {
+    jvmToolchain(javaVersion)
 }

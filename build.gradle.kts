@@ -23,6 +23,8 @@ data class Mc(
 
 val mcVersion = stonecutter.current.version
 val mc = when (mcVersion) {
+    // 1.18.2 is a separate intermediary generation from 1.18/1.18.1, so 1.18 + 1.18.1 need their own anchor.
+    "1.18.1" -> Mc("1.18.1+build.22", 17, ">=1.18 <1.18.2", listOf("1.18", "1.18.1"), "0.46.6+1.18", "6.5.102", "3.0.1")
     "1.18.2" -> Mc("1.18.2+build.4", 17, ">=1.18.2 <1.19", listOf("1.18.2"), "0.77.0+1.18.2", "6.5.102", "3.2.5")
     "1.19.2" -> Mc("1.19.2+build.28", 17, ">=1.19 <1.19.3", listOf("1.19", "1.19.1", "1.19.2"), "0.77.0+1.19.2", "8.3.134", "4.1.2")
     "1.19.4" -> Mc("1.19.4+build.2", 17, ">=1.19.3 <1.20", listOf("1.19.3", "1.19.4"), "0.87.2+1.19.4", "10.1.135", "6.3.1")
@@ -80,6 +82,15 @@ fabricApi {
 
 dependencies {
     "modGametestImplementation"("net.fabricmc.fabric-api:fabric-api:${mc.fapi}")
+}
+
+// 1.18/1.18.1 only ship the old Fabric API (0.46.6), whose transitive access-widener
+// clashes with the modern loader at gametest launch (NoClassDefFoundError:
+// AccessWidenerVisitor). The gametest still *compiles* here, and the logic is identical
+// to 1.18.2 (same <1.19 branch), which is gametested — so build-verify 1.18.1 and skip
+// only its gametest *run*.
+if (mcVersion == "1.18.1") {
+    tasks.matching { it.name == "runGameTest" }.configureEach { enabled = false }
 }
 
 tasks.processResources {

@@ -3,15 +3,16 @@
 	"id": "simple-player-heads",
 	"version": "${version}",
 	"name": "Simple Player Heads",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Drops a player's head on death, configurable per death cause (self-kill, killed by another player, or any other death).",
 	"authors": [
-		"Me!"
+		"iSlavok"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://modrinth.com/mod/simple-player-heads",
+		"sources": "https://github.com/iSlavok/Simple-Player-Heads",
+		"issues": "https://github.com/iSlavok/Simple-Player-Heads/issues"
 	},
-	"license": "CC0-1.0",
+	"license": "MIT",
 	"icon": "assets/simple-player-heads/icon.png",
 	"environment": "*",
 	"entrypoints": {
@@ -20,20 +21,10 @@
 				"value": "online.slavok.heads.SimplePlayerHeads",
 				"adapter": "kotlin"
 			}
-		],
-		"client": [
-			{
-				"value": "online.slavok.heads.SimplePlayerHeadsClient",
-				"adapter": "kotlin"
-			}
 		]
 	},
 	"mixins": [
-		"simple-player-heads.mixins.json",
-		{
-			"config": "simple-player-heads.client.mixins.json",
-			"environment": "client"
-		}
+		"simple-player-heads.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.15.11",
@@ -41,8 +32,5 @@
 		"java": ">=21",
 		"fabric-api": "*",
 		"fabric-language-kotlin": "*"
-	},
-	"suggests": {
-		"another-mod": "*"
 	}
 }

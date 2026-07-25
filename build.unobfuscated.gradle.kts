@@ -13,6 +13,7 @@ data class Unobf(val depends: String, val gameVersions: List<String>, val fapi: 
 
 val mcVersion = stonecutter.current.version
 val u = when (mcVersion) {
+    "26.1.2" -> Unobf(">=26.1 <26.2", listOf("26.1", "26.1.1", "26.1.2"), "0.155.2+26.1.2", "26.1.154", "18.0.0")
     "26.2" -> Unobf(">=26.2 <27", listOf("26.2"), "0.155.2+26.2", "26.2.155", "20.0.1")
     else -> error("Unconfigured Minecraft version: $mcVersion")
 }

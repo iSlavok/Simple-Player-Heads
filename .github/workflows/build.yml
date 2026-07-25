@@ -42,7 +42,7 @@ jobs:
           java-version: 25
           distribution: temurin
       - uses: gradle/actions/setup-gradle@v4
-      - run: ./gradlew :26.2:build --stacktrace
+      - run: ./gradlew :26.1.2:build :26.2:build --stacktrace
       - uses: actions/upload-artifact@v4
         with:
           name: jars-unobfuscated

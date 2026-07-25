@@ -20,6 +20,8 @@ stonecutter {
         // Register it only when the running JDK can build it, so the project still
         // builds the yarn range on older JDKs.
         if (JavaVersion.current().majorVersion.toInt() >= 25) {
+            // 26.x drops are not binary-compatible with each other, so each gets its own anchor.
+            version("26.1.2", "26.1.2").buildscript = "build.unobfuscated.gradle.kts"
             version("26.2", "26.2").buildscript = "build.unobfuscated.gradle.kts"
         }
         vcsVersion = "1.21.8"

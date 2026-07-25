@@ -20,8 +20,8 @@ The default configuration file is `config\simple-player-heads.toml`:
 
 ```toml
 selfKill = true
-playerKill = false
-otherDeaths = false
+playerKill = true
+otherDeaths = true
 ```
 
 **Configuration options:**

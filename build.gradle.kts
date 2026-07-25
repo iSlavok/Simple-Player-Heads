@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     id("dev.kikugie.stonecutter")
     id("fabric-loom") version "1.17.17"
@@ -50,6 +48,18 @@ dependencies {
     include("net.peanuuutz.tomlkt:tomlkt:0.4.0")
 }
 
+fabricApi {
+    configureTests {
+        createSourceSet = true
+        modId = "${property("archives_base_name")}-test"
+        eula = true
+    }
+}
+
+dependencies {
+    "modGametestImplementation"("net.fabricmc.fabric-api:fabric-api:${mc.fapi}")
+}
+
 tasks.processResources {
     val props = mapOf(
         "version" to project.version,
@@ -60,20 +70,13 @@ tasks.processResources {
     filesMatching(listOf("fabric.mod.json", "*.mixins.json")) { expand(props) }
 }
 
-// Cross-compile the per-version Java level (17 for <=1.20.4, 21 for 1.20.5+) from a
-// single JDK 21 build. Gametests, which must *run* on the matching JDK, switch this to
-// per-version toolchains in a later PR.
-tasks.withType<JavaCompile>().configureEach { options.release = mc.java }
-
-kotlin {
-    compilerOptions {
-        jvmTarget = JvmTarget.fromTarget(mc.java.toString())
-    }
+// One JDK toolchain per Minecraft version (17 for <=1.20.4, 21 for 1.20.5+) so both
+// compilation and gametests run on the JDK that Minecraft version requires.
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(mc.java)
+    withSourcesJar()
 }
 
-java {
-    withSourcesJar()
-    val jv = JavaVersion.toVersion(mc.java)
-    sourceCompatibility = jv
-    targetCompatibility = jv
+kotlin {
+    jvmToolchain(mc.java)
 }

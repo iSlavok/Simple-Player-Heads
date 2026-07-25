@@ -30,6 +30,8 @@ otherDeaths = true
 - `playerKill`: If true, player will get his head after kill by another player
 - `otherDeaths`: If true, player will get his head after all other deaths
 
+You can also edit these options in-game from the [Mod Menu](https://modrinth.com/mod/modmenu) config screen (Cloth Config is bundled).
+
 
 ## Installation
 

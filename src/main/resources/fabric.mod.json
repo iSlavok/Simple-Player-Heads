@@ -21,6 +21,12 @@
 				"value": "online.slavok.heads.SimplePlayerHeads",
 				"adapter": "kotlin"
 			}
+		],
+		"modmenu": [
+			{
+				"value": "online.slavok.heads.ModMenuIntegration",
+				"adapter": "kotlin"
+			}
 		]
 	},
 	"mixins": [
@@ -31,6 +37,10 @@
 		"minecraft": "${minecraft_dep}",
 		"java": ">=${java_level}",
 		"fabric-api": "*",
-		"fabric-language-kotlin": "*"
+		"fabric-language-kotlin": "*",
+		"cloth-config": "*"
+	},
+	"suggests": {
+		"modmenu": "*"
 	}
 }

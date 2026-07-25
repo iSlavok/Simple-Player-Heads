@@ -5,11 +5,11 @@ plugins {
     kotlin("plugin.serialization") version "2.4.10"
 }
 
-data class Unobf(val depends: String, val gameVersions: List<String>, val fapi: String)
+data class Unobf(val depends: String, val gameVersions: List<String>, val fapi: String, val cloth: String, val modmenu: String)
 
 val mcVersion = stonecutter.current.version
 val u = when (mcVersion) {
-    "26.2" -> Unobf(">=26.2 <27", listOf("26.2"), "0.155.2+26.2")
+    "26.2" -> Unobf(">=26.2 <27", listOf("26.2"), "0.155.2+26.2", "26.2.155", "20.0.1")
     else -> error("Unconfigured Minecraft version: $mcVersion")
 }
 val javaVersion = 25
@@ -18,12 +18,25 @@ version = "${property("mod_version")}+mc$mcVersion"
 group = property("maven_group") as String
 base { archivesName = property("archives_base_name") as String }
 
+repositories {
+    maven("https://maven.terraformersmc.com/releases/") // ModMenu
+    maven("https://maven.shedaniel.me/")                 // Cloth Config
+    maven("https://maven.nucleoid.xyz/")                 // placeholder-api (transitive of older ModMenu)
+}
+
 dependencies {
     minecraft("com.mojang:minecraft:$mcVersion")
     // No mappings() — Minecraft 26+ is unobfuscated (Mojang names), no Yarn/Mojmap.
     implementation("net.fabricmc:fabric-loader:${property("loader_version")}")
     implementation("net.fabricmc.fabric-api:fabric-api:${u.fapi}")
     implementation("net.fabricmc:fabric-language-kotlin:${property("fabric_kotlin_version")}")
+
+    // Config screen: ModMenu optional (compile-only); Cloth Config bundled (jar-in-jar).
+    implementation("com.terraformersmc:modmenu:${u.modmenu}")
+    implementation("me.shedaniel.cloth:cloth-config-fabric:${u.cloth}") {
+        exclude(group = "net.fabricmc.fabric-api")
+    }
+    include("me.shedaniel.cloth:cloth-config-fabric:${u.cloth}")
 
     // kotlinx-serialization-json is provided at runtime by Fabric Language Kotlin.
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1")

@@ -15,7 +15,7 @@ stonecutter {
     kotlinController = true
     centralScript = "build.gradle.kts"
     create(rootProject) {
-        versions("1.18.2", "1.19.2", "1.19.4", "1.20.1", "1.20.4", "1.20.6", "1.21.8")
+        versions("1.18.1", "1.18.2", "1.19.2", "1.19.4", "1.20.1", "1.20.4", "1.20.6", "1.21.8")
         // Unobfuscated 26+ needs JDK 25 and a separate (non-remapping) build script.
         // Register it only when the running JDK can build it, so the project still
         // builds the yarn range on older JDKs.

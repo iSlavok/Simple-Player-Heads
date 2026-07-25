@@ -18,12 +18,16 @@ data class Mc(
 
 val mcVersion = stonecutter.current.version
 val mc = when (mcVersion) {
+    "1.18.2" -> Mc("1.18.2+build.4", 17, ">=1.18.2 <1.19", listOf("1.18.2"), "0.77.0+1.18.2")
+    "1.19.2" -> Mc("1.19.2+build.28", 17, ">=1.19 <1.19.3", listOf("1.19", "1.19.1", "1.19.2"), "0.77.0+1.19.2")
+    "1.19.4" -> Mc("1.19.4+build.2", 17, ">=1.19.3 <1.20", listOf("1.19.3", "1.19.4"), "0.87.2+1.19.4")
+    "1.20.1" -> Mc("1.20.1+build.10", 17, ">=1.20 <1.20.2", listOf("1.20", "1.20.1"), "0.92.11+1.20.1")
+    "1.20.4" -> Mc("1.20.4+build.3", 17, ">=1.20.2 <1.20.5", listOf("1.20.2", "1.20.3", "1.20.4"), "0.97.3+1.20.4")
+    "1.20.6" -> Mc("1.20.6+build.3", 21, ">=1.20.5 <1.21", listOf("1.20.5", "1.20.6"), "0.100.8+1.20.6")
     "1.21.8" -> Mc(
-        yarn = "1.21.8+build.1",
-        java = 21,
-        depends = ">=1.21 <1.22",
-        gameVersions = listOf("1.21", "1.21.1", "1.21.2", "1.21.3", "1.21.4", "1.21.5", "1.21.6", "1.21.7", "1.21.8"),
-        fapi = "0.136.1+1.21.8",
+        "1.21.8+build.1", 21, ">=1.21 <1.22",
+        listOf("1.21", "1.21.1", "1.21.2", "1.21.3", "1.21.4", "1.21.5", "1.21.6", "1.21.7", "1.21.8"),
+        "0.136.1+1.21.8",
     )
     else -> error("Unconfigured Minecraft version: $mcVersion")
 }
@@ -56,6 +60,9 @@ tasks.processResources {
     filesMatching(listOf("fabric.mod.json", "*.mixins.json")) { expand(props) }
 }
 
+// Cross-compile the per-version Java level (17 for <=1.20.4, 21 for 1.20.5+) from a
+// single JDK 21 build. Gametests, which must *run* on the matching JDK, switch this to
+// per-version toolchains in a later PR.
 tasks.withType<JavaCompile>().configureEach { options.release = mc.java }
 
 kotlin {

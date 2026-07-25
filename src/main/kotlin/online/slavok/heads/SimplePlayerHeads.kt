@@ -5,8 +5,11 @@ import net.fabricmc.loader.api.FabricLoader
 import online.slavok.heads.config.ConfigManager
 
 object SimplePlayerHeads : ModInitializer {
-	val configManager = ConfigManager(FabricLoader.getInstance().configDir.resolve("simple-player-heads.toml").toFile())
+    lateinit var configManager: ConfigManager
+        private set
 
-	override fun onInitialize() {
-	}
+    override fun onInitialize() {
+        val configFile = FabricLoader.getInstance().configDir.resolve("simple-player-heads.toml").toFile()
+        configManager = ConfigManager(configFile)
+    }
 }

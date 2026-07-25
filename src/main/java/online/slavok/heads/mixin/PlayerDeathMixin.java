@@ -11,8 +11,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ServerPlayerEntity.class)
 public class PlayerDeathMixin {
 	@Inject(at = @At("HEAD"), method = "onDeath")
-	private void onDeath(DamageSource damageSource, CallbackInfo info) {
-		var instance = ((ServerPlayerEntity)(Object)this);
-		new PlayerDeathEvent().onPlayerDeath(instance.getGameProfile(), instance.getInventory(), damageSource);
+	private void simplePlayerHeads$onDeath(DamageSource damageSource, CallbackInfo info) {
+		ServerPlayerEntity self = (ServerPlayerEntity) (Object) this;
+		PlayerDeathEvent.onPlayerDeath(self.getGameProfile(), self.getInventory(), damageSource);
 	}
 }

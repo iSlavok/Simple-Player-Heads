@@ -6,7 +6,8 @@
 	"environment": "*",
 	"entrypoints": {
 		"fabric-gametest": [
-			"online.slavok.heads.gametest.HeadDropGameTest"
+			"online.slavok.heads.gametest.HeadDropGameTest",
+			"online.slavok.heads.gametest.ConfigGameTest"
 		]
 	},
 	"depends": {

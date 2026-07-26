@@ -46,7 +46,9 @@ behavior. It lives in `plugin/` as a standalone build.
 - **Build:** `./gradlew -p plugin build` → `plugin/build/libs/simple-player-heads-plugin-<version>.jar`
 - **Run for testing:** `./gradlew -p plugin runServer` (downloads Paper; override the
   Minecraft version with `-Prun_mc=1.20.6`).
-- **Install:** drop the jar in the server's `plugins/` folder.
+- **Install:** download the plugin jar from the same
+  [Modrinth project](https://modrinth.com/mod/simple-player-heads) (filter by the
+  Bukkit/Paper/Folia loaders) or build it, then drop it in the server's `plugins/` folder.
 - **Config:** `plugins/SimplePlayerHeads/config.yml` with the same `selfKill`,
   `playerKill`, `otherDeaths` flags. Edit and restart/reload the server to apply.
 

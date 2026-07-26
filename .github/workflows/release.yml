@@ -37,11 +37,16 @@ jobs:
       # Build every version's jar (no gametest boot).
       - run: ./gradlew assemble ${{ steps.ver.outputs.arg }} --stacktrace
 
+      # Build the standalone Bukkit plugin jar too (its own build, JDK 21 toolchain).
+      - run: ./gradlew -p plugin build ${{ steps.ver.outputs.arg }} --stacktrace
+
       # softprops has no exclude patterns, so stage only the loadable (non-sources) jars.
+      # For the plugin, skip the thin (non-shaded) jar.
       - name: Collect release jars
         run: |
           mkdir -p release-jars
           find versions -path '*/build/libs/*.jar' ! -name '*-sources.jar' -exec cp {} release-jars/ \;
+          find plugin/build/libs -name '*.jar' ! -name '*-thin.jar' ! -name '*-sources.jar' -exec cp {} release-jars/ \;
           ls -la release-jars
       - uses: softprops/action-gh-release@v2
         with:
@@ -49,7 +54,13 @@ jobs:
           fail_on_unmatched_files: true
           generate_release_notes: true
 
-      - name: Publish to Modrinth
+      - name: Publish mod to Modrinth
         env:
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
         run: ./gradlew publishMods ${{ steps.ver.outputs.arg }} --stacktrace
+
+      # Standalone plugin → same Modrinth project, plugin loaders, "+plugin" version suffix.
+      - name: Publish plugin to Modrinth
+        env:
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+        run: ./gradlew -p plugin publishMods ${{ steps.ver.outputs.arg }} --stacktrace

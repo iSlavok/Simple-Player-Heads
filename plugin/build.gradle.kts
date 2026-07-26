@@ -53,3 +53,12 @@ tasks.processResources {
     inputs.properties(props)
     filesMatching("plugin.yml") { expand(props) }
 }
+
+tasks.runServer {
+    val mc = providers.gradleProperty("run_mc").getOrElse("1.21.8")
+    minecraftVersion(mc)
+    // Paper for MC 26+ requires Java 25; older run on 21.
+    javaLauncher.set(javaToolchains.launcherFor {
+        languageVersion.set(JavaLanguageVersion.of(if (mc.substringBefore(".").toInt() >= 26) 25 else 21))
+    })
+}

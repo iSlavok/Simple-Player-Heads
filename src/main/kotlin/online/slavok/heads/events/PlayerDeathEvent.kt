@@ -23,14 +23,28 @@ import net.minecraft.component.type.ProfileComponent
 /*import net.minecraft.core.component.DataComponents
 import net.minecraft.world.item.component.ResolvableProfile
 *///?}
+// Looting enchantment access: static object <1.20.5, registry entry 1.20.5+, Mojang names 1.22+.
+//? if <1.22 {
+import net.minecraft.enchantment.EnchantmentHelper
+import net.minecraft.enchantment.Enchantments
+//?} else {
+/*import net.minecraft.world.item.enchantment.EnchantmentHelper
+import net.minecraft.world.item.enchantment.Enchantments
+import net.minecraft.core.registries.Registries*/
+//?}
+//? if >=1.21 && <1.22 {
+import net.minecraft.registry.RegistryKeys
+//?}
 
-// Player and inventory classes were renamed in the unobfuscated (26+) mappings.
+// Player, inventory and world classes were renamed in the unobfuscated (26+) mappings.
 //? if <1.22 {
 private typealias PlayerInv = net.minecraft.entity.player.PlayerInventory
 private typealias PlayerType = net.minecraft.entity.player.PlayerEntity
+private typealias WorldType = net.minecraft.world.World
 //?} else {
 /*private typealias PlayerInv = net.minecraft.world.entity.player.Inventory
-private typealias PlayerType = net.minecraft.world.entity.player.Player*/
+private typealias PlayerType = net.minecraft.world.entity.player.Player
+private typealias WorldType = net.minecraft.world.level.Level*/
 //?}
 
 object PlayerDeathEvent {
@@ -77,6 +91,22 @@ object PlayerDeathEvent {
             2 -> looting.looting2
             else -> looting.looting3
         }
+    }
+
+    /** Looting level of [weapon]; 0 if unenchanted. [world] supplies the enchantment registry (1.20.5+). */
+    @JvmStatic
+    fun lootingLevel(weapon: ItemStack, world: WorldType): Int {
+        // <1.21: Enchantments.LOOTING is the Enchantment value. 1.21+: it is a RegistryKey, so
+        // resolve it to a RegistryEntry via the world registry. 1.22+: Mojang names + Holder.
+        //? if <1.21 {
+        /*return EnchantmentHelper.getLevel(Enchantments.LOOTING, weapon)
+        *///?} elif <1.22 {
+        val entry = world.registryManager.getOrThrow(RegistryKeys.ENCHANTMENT).getOrThrow(Enchantments.LOOTING)
+        return EnchantmentHelper.getLevel(entry, weapon)
+        //?} else {
+        /*val holder = world.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.LOOTING)
+        return EnchantmentHelper.getItemEnchantmentLevel(holder, weapon)
+        *///?}
     }
 
     private fun addHead(gameProfile: GameProfile, inventory: PlayerInv) {

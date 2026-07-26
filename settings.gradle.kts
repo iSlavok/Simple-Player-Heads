@@ -11,6 +11,11 @@ plugins {
     id("dev.kikugie.stonecutter") version "0.9.7"
 }
 
+// Standalone plugin build — surfaced to the IDE only; it is NOT pulled into the root
+// `build` (which would configure the whole Loom/Minecraft matrix). Build it with
+// `./gradlew -p plugin build`.
+includeBuild("plugin")
+
 stonecutter {
     kotlinController = true
     centralScript = "build.gradle.kts"

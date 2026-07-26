@@ -17,6 +17,13 @@ open class SimplePlayerHeadsPlugin : JavaPlugin() {
             selfKill = c.getBoolean("selfKill", true),
             playerKill = c.getBoolean("playerKill", true),
             otherDeaths = c.getBoolean("otherDeaths", true),
+            playerKillLooting = PlayerKillLooting(
+                enabled = c.getBoolean("playerKillLooting.enabled", false),
+                noLooting = c.getDouble("playerKillLooting.noLooting", 1.0),
+                looting1 = c.getDouble("playerKillLooting.looting1", 1.0),
+                looting2 = c.getDouble("playerKillLooting.looting2", 1.0),
+                looting3 = c.getDouble("playerKillLooting.looting3", 1.0),
+            ),
         )
     }
 }

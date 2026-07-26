@@ -38,6 +38,20 @@ You can also edit these options in-game from the [Mod Menu](https://modrinth.com
 1. Download the latest release of Simple Player Heads from [here](https://modrinth.com/mod/simple-player-heads).
 2. Place the `.jar` file in your `mods` folder.
 
+## Server Plugin (Bukkit/Spigot/Paper/Purpur/Folia)
+
+For servers without a Fabric client mod, a Bukkit plugin reproduces the head-drop
+behavior. It lives in `plugin/` as a standalone build.
+
+- **Build:** `./gradlew -p plugin build` → `plugin/build/libs/simple-player-heads-plugin-<version>.jar`
+- **Run for testing:** `./gradlew -p plugin runServer` (downloads Paper; override the
+  Minecraft version with `-Prun_mc=1.20.6`).
+- **Install:** drop the jar in the server's `plugins/` folder.
+- **Config:** `plugins/SimplePlayerHeads/config.yml` with the same `selfKill`,
+  `playerKill`, `otherDeaths` flags. Edit and restart/reload the server to apply.
+
+One jar runs Spigot, Paper, Purpur and Folia (it declares `folia-supported: true`).
+
 ## Building
 
 `./gradlew build` builds a jar per supported version into `versions/<version>/build/libs/`.

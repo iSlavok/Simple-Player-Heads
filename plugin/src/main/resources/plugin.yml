@@ -1,0 +1,8 @@
+name: SimplePlayerHeads
+version: ${version}
+main: online.slavok.heads.plugin.SimplePlayerHeadsPlugin
+api-version: "1.18"
+folia-supported: true
+description: Drops a player head on death, configurable per death cause.
+author: iSlavok
+website: https://github.com/iSlavok/Simple-Player-Heads

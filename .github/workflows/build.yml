@@ -32,6 +32,23 @@ jobs:
           path: versions/*/build/libs/*.jar
           if-no-files-found: error
 
+  # Standalone Bukkit plugin build — one JDK 21 job, independent of the mod's version grid.
+  plugin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: 21
+          distribution: temurin
+      - uses: gradle/actions/setup-gradle@v4
+      - run: ./gradlew -p plugin build --stacktrace
+      - uses: actions/upload-artifact@v4
+        with:
+          name: plugin-jar
+          path: plugin/build/libs/*.jar
+          if-no-files-found: error
+
   # Unobfuscated 26+ needs JDK 25; settings only registers those nodes on JDK 25+.
   build-unobfuscated:
     runs-on: ubuntu-latest

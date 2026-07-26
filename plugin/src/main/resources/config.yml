@@ -1,0 +1,6 @@
+# If true, player will get his head after self kill
+selfKill: true
+# If true, player will get his head after kill by another player
+playerKill: true
+# If true, player will get his head after all other deaths
+otherDeaths: true

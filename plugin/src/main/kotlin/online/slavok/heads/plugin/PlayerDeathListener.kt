@@ -19,12 +19,15 @@ class PlayerDeathListener(private val configProvider: () -> HeadConfig) : Listen
     fun onDeath(event: PlayerDeathEvent) {
         val victim = event.entity
         val killer: Player? = victim.killer
-        val shouldDrop = HeadDropDecision.shouldDrop(
+        // Interim bridge: with looting disabled (default) dropChance is 1.0/0.0, matching the old
+        // boolean. Task 3 replaces this with the real Looting read + RNG roll.
+        val chance = HeadDropDecision.dropChance(
             config = configProvider(),
             killerIsPlayer = killer != null,
             killerIsSelf = killer != null && killer == victim,
+            lootingLevel = 0,
         )
-        if (!shouldDrop) return
+        if (chance < 1.0) return
 
         val head = createHead(victim)
         // Mirror the mod: head joins the death drops by default; with keepInventory it stays on the player.

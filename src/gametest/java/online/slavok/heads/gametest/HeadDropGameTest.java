@@ -65,6 +65,52 @@ public class HeadDropGameTest {
     }
     //?}
 
+    //? if >=1.21 {
+    @GameTest
+    //?} elif >=1.19 {
+    /*@GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)*/
+    //?} else {
+    /*@GameTest(structureName = FabricGameTest.EMPTY_STRUCTURE)*/
+    //?}
+    //? if >=1.22 {
+    /*public void dropChanceBucketsByLooting(GameTestHelper context) {
+        checkDropChance();
+        context.succeed();
+    }*/
+    //?} else {
+    public void dropChanceBucketsByLooting(TestContext context) {
+        checkDropChance();
+        context.complete();
+    }
+    //?}
+
+    private static void checkDropChance() {
+        online.slavok.heads.config.PlayerKillLooting looting =
+                new online.slavok.heads.config.PlayerKillLooting(true, 0.0, 0.25, 0.5, 1.0);
+        online.slavok.heads.config.Config config =
+                new online.slavok.heads.config.Config(true, true, true, looting);
+
+        // playerKill=false overrides looting.
+        online.slavok.heads.config.Config gated =
+                new online.slavok.heads.config.Config(true, false, true, looting);
+        expect(0.0, PlayerDeathEvent.dropChance(gated, true, false, 3));
+
+        // Buckets by level + clamp above III.
+        expect(0.0, PlayerDeathEvent.dropChance(config, true, false, 0));
+        expect(0.25, PlayerDeathEvent.dropChance(config, true, false, 1));
+        expect(0.5, PlayerDeathEvent.dropChance(config, true, false, 2));
+        expect(1.0, PlayerDeathEvent.dropChance(config, true, false, 3));
+        expect(1.0, PlayerDeathEvent.dropChance(config, true, false, 7));
+
+        // Self kill / other deaths ignore looting.
+        expect(1.0, PlayerDeathEvent.dropChance(config, true, true, 0));
+        expect(1.0, PlayerDeathEvent.dropChance(config, false, false, 0));
+    }
+
+    private static void expect(double want, double got) {
+        if (want != got) throw new RuntimeException("dropChance expected " + want + " got " + got);
+    }
+
     private static boolean hasProfile(ItemStack head) {
         //? if <1.20.5 {
         /*return head.getNbt() != null && head.getNbt().contains("SkullOwner");*/

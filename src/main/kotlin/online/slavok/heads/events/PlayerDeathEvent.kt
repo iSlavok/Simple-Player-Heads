@@ -58,10 +58,34 @@ object PlayerDeathEvent {
         //?}
         val killerIsPlayer = attacker is PlayerType
         val killerIsSelf = attacker is PlayerType && attacker.gameProfile == gameProfile
-        // Interim: real Looting level + RNG roll land in the wire-up task. With looting disabled
-        // (default) dropChance is 1.0/0.0, matching the old boolean behavior.
-        val chance = dropChance(SimplePlayerHeads.configManager.config, killerIsPlayer, killerIsSelf, 0)
-        if (chance >= 1.0) addHead(gameProfile, inventory)
+        val lootingLevel = if (attacker is PlayerType) lootingLevelOf(attacker) else 0
+        val chance = dropChance(
+            SimplePlayerHeads.configManager.config, killerIsPlayer, killerIsSelf, lootingLevel,
+        )
+        if (rolls(chance, attacker)) addHead(gameProfile, inventory)
+    }
+
+    /** Looting level of the killer's main-hand weapon (mappings rename the accessors at 1.22). */
+    private fun lootingLevelOf(attacker: PlayerType): Int {
+        //? if <1.22 {
+        val weapon = attacker.mainHandStack
+        val world = attacker.world
+        //?} else {
+        /*val weapon = attacker.mainHandItem
+        val world = attacker.level()*/
+        //?}
+        return lootingLevel(weapon, world)
+    }
+
+    /**
+     * Whether the head drops for [chance]. A fractional chance only arises on the player-kill path
+     * (looting enabled), where [attacker] is a player and supplies the RNG; 1.0/0.0 short-circuit.
+     */
+    private fun rolls(chance: Double, attacker: Any?): Boolean = when {
+        chance <= 0.0 -> false
+        chance >= 1.0 -> true
+        attacker is PlayerType -> attacker.random.nextDouble() < chance
+        else -> false
     }
 
     /**

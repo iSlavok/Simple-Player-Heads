@@ -43,7 +43,10 @@ looting3 = 1.0
   above III uses `looting3`. Example: `noLooting = 0.0`, `looting3 = 1.0` drops a head
   only when the killer used a Looting III weapon.
 
-You can also edit these options in-game from the [Mod Menu](https://modrinth.com/mod/modmenu) config screen (Cloth Config is bundled).
+You can also edit these options in-game from the [Mod Menu](https://modrinth.com/mod/modmenu)
+config screen. The screen uses [YACL](https://modrinth.com/mod/yacl) on Minecraft 1.20+ and
+[Cloth Config](https://modrinth.com/mod/cloth-config) on 1.18–1.19 — install the one matching
+your version. Neither is bundled; the mod works fine without a screen (edit the config file).
 
 
 ## Installation

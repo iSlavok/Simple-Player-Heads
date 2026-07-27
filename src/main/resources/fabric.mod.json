@@ -37,10 +37,10 @@
 		"minecraft": "${minecraft_dep}",
 		"java": ">=${java_level}",
 		"fabric-api": "*",
-		"fabric-language-kotlin": "*",
-		"cloth-config": "*"
+		"fabric-language-kotlin": "*"
 	},
 	"suggests": {
-		"modmenu": "*"
+		"modmenu": "*",
+		"${config_screen_mod}": "*"
 	}
 }

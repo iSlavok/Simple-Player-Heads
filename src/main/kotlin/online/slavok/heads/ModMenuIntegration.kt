@@ -4,6 +4,7 @@ import com.terraformersmc.modmenu.api.ConfigScreenFactory
 import com.terraformersmc.modmenu.api.ModMenuApi
 import me.shedaniel.clothconfig2.api.ConfigBuilder
 import online.slavok.heads.config.Config
+import online.slavok.heads.config.PlayerKillLooting
 //? if >=1.22 {
 /*import net.minecraft.network.chat.Component
 *///?} else {
@@ -49,8 +50,51 @@ class ModMenuIntegration : ModMenuApi {
                 .build(),
         )
 
+        val looting = config.playerKillLooting
+        var lootingEnabled = looting.enabled
+        var noLooting = looting.noLooting
+        var looting1 = looting.looting1
+        var looting2 = looting.looting2
+        var looting3 = looting.looting3
+
+        category.addEntry(
+            entries.startBooleanToggle(literal("playerKillLooting.enabled"), looting.enabled)
+                .setDefaultValue(false)
+                .setSaveConsumer { lootingEnabled = it }
+                .build(),
+        )
+        category.addEntry(
+            entries.startDoubleField(literal("playerKillLooting.noLooting"), looting.noLooting)
+                .setMin(0.0).setMax(1.0).setDefaultValue(1.0)
+                .setSaveConsumer { noLooting = it }
+                .build(),
+        )
+        category.addEntry(
+            entries.startDoubleField(literal("playerKillLooting.looting1"), looting.looting1)
+                .setMin(0.0).setMax(1.0).setDefaultValue(1.0)
+                .setSaveConsumer { looting1 = it }
+                .build(),
+        )
+        category.addEntry(
+            entries.startDoubleField(literal("playerKillLooting.looting2"), looting.looting2)
+                .setMin(0.0).setMax(1.0).setDefaultValue(1.0)
+                .setSaveConsumer { looting2 = it }
+                .build(),
+        )
+        category.addEntry(
+            entries.startDoubleField(literal("playerKillLooting.looting3"), looting.looting3)
+                .setMin(0.0).setMax(1.0).setDefaultValue(1.0)
+                .setSaveConsumer { looting3 = it }
+                .build(),
+        )
+
         builder.setSavingRunnable {
-            SimplePlayerHeads.configManager.save(Config(selfKill, playerKill, otherDeaths))
+            SimplePlayerHeads.configManager.save(
+                Config(
+                    selfKill, playerKill, otherDeaths,
+                    PlayerKillLooting(lootingEnabled, noLooting, looting1, looting2, looting3),
+                ),
+            )
         }
         builder.build()
     }

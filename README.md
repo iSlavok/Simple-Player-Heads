@@ -22,6 +22,13 @@ The default configuration file is `config\simple-player-heads.toml`:
 selfKill = true
 playerKill = true
 otherDeaths = true
+
+[playerKillLooting]
+enabled = false
+noLooting = 0.0
+looting1 = 0.33
+looting2 = 0.67
+looting3 = 1.0
 ```
 
 **Configuration options:**
@@ -29,6 +36,12 @@ otherDeaths = true
 - `selfKill`: If true, player will get his head after self kill
 - `playerKill`: If true, player will get his head after kill by another player
 - `otherDeaths`: If true, player will get his head after all other deaths
+- `playerKillLooting.enabled`: If true, a player-kill head drop uses the per-Looting-level
+  chances below instead of always dropping. Requires `playerKill = true`.
+- `playerKillLooting.noLooting` / `looting1` / `looting2` / `looting3`: Drop chance
+  (`0.0`–`1.0`) when the killer's weapon has no Looting / Looting I / II / III. Looting
+  above III uses `looting3`. Example: `noLooting = 0.0`, `looting3 = 1.0` drops a head
+  only when the killer used a Looting III weapon.
 
 You can also edit these options in-game from the [Mod Menu](https://modrinth.com/mod/modmenu) config screen (Cloth Config is bundled).
 
@@ -50,7 +63,9 @@ behavior. It lives in `plugin/` as a standalone build.
   [Modrinth project](https://modrinth.com/mod/simple-player-heads) (filter by the
   Bukkit/Paper/Folia loaders) or build it, then drop it in the server's `plugins/` folder.
 - **Config:** `plugins/SimplePlayerHeads/config.yml` with the same `selfKill`,
-  `playerKill`, `otherDeaths` flags. Edit and restart/reload the server to apply.
+  `playerKill`, `otherDeaths` flags plus a `playerKillLooting` section (`enabled` +
+  `noLooting`/`looting1`/`looting2`/`looting3` drop chances). Edit and restart/reload
+  the server to apply.
 
 One jar runs Spigot, Paper, Purpur and Folia (it declares `folia-supported: true`).
 

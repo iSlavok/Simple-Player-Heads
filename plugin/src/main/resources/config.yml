@@ -10,7 +10,7 @@ playerKillLooting:
   # Master switch: false = ignore Looting, use the playerKill flag as before.
   enabled: false
   # Drop chance 0.0-1.0 by the killer's Looting level (Looting above III uses looting3).
-  noLooting: 1.0
-  looting1: 1.0
-  looting2: 1.0
+  noLooting: 0.0
+  looting1: 0.33
+  looting2: 0.67
   looting3: 1.0

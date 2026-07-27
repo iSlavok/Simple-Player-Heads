@@ -8,11 +8,11 @@ data class PlayerKillLooting(
     @TomlComment("Enable per-Looting-level drop chance for kills by another player")
     val enabled: Boolean = false,
     @TomlComment("Drop chance (0.0-1.0) when the killer's weapon has no Looting")
-    val noLooting: Double = 1.0,
+    val noLooting: Double = 0.0,
     @TomlComment("Drop chance with Looting I")
-    val looting1: Double = 1.0,
+    val looting1: Double = 0.33,
     @TomlComment("Drop chance with Looting II")
-    val looting2: Double = 1.0,
+    val looting2: Double = 0.67,
     @TomlComment("Drop chance with Looting III (and above)")
     val looting3: Double = 1.0,
 )

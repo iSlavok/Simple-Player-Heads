@@ -25,9 +25,9 @@ otherDeaths = true
 
 [playerKillLooting]
 enabled = false
-noLooting = 1.0
-looting1 = 1.0
-looting2 = 1.0
+noLooting = 0.0
+looting1 = 0.33
+looting2 = 0.67
 looting3 = 1.0
 ```
 
